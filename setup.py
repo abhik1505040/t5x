@@ -1,4 +1,4 @@
-# Copyright 2022 The T5X Authors.
+# Copyright 2023 The T5X Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ setuptools.setup(
         f'jaxlib >= {_jaxlib_version}',
         'jestimator',
         'numpy',
-        'orbax @ git+https://github.com/google/orbax#egg=orbax',
+        'orbax-checkpoint',
         'seqio @ git+https://github.com/google/seqio#egg=seqio',
         'tensorflow-cpu',
         'tensorstore >= 0.1.20',

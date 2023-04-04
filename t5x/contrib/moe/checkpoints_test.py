@@ -1,4 +1,4 @@
-# Copyright 2022 The T5X Authors.
+# Copyright 2023 The T5X Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ def create_sharded_array(
   """Converts NumPy array into sharded JAX Array."""
   return jax.make_array_from_callback(
       arr.shape,
-      jax.sharding.MeshPspecSharding(global_mesh, mesh_axes),
+      jax.sharding.NamedSharding(global_mesh, mesh_axes),
       lambda idx: arr[idx],
   )
 

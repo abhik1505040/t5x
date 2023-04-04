@@ -15,16 +15,17 @@ MIXTURE_OR_TASK_NAME = "bt5"
 TASK_FEATURE_LENGTHS = {"targets": 1024}
 TRAIN_STEPS = 100000
 BATCH_SIZE = 128 # no of sequences
+USE_CACHED_TASKS = False
 
 DROPOUT_RATE = 0.0
 
-seqio.SentencePieceVocabulary.sentencepiece_model_file = tasks.PRETRAINED_VOCAB_PATH
+seqio.SentencePieceVocabulary.sentencepiece_model_file = "gs://bt5-small-bucket/new_vocabs/50k/new_vocab.model"
 
 train_script.train:
   random_seed = 42
   train_eval_dataset_cfg = None
   infer_eval_dataset_cfg = None
-  
+
 utils.SaveCheckpointConfig:
   period = 50000  # checkpoint frequency
 

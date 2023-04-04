@@ -52,6 +52,7 @@ TaskRegistry.add(
         functools.partial(
             t5.data.preprocessors.rekey,
             key_map={
+                "inputs": None,
                 "targets": "text"
             }),
         seqio.preprocessors.tokenize,

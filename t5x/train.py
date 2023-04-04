@@ -48,6 +48,7 @@ from t5x import train_state as train_state_lib
 from t5x import trainer as trainer_lib
 from t5x import utils
 import tensorflow as tf
+from jax_smi import initialise_tracking
 # pylint:enable=g-import-not-at-top
 
 
@@ -738,6 +739,7 @@ if __name__ == '__main__':
   FLAGS = flags.FLAGS
 
   jax.config.parse_flags_with_absl()
+  initialise_tracking()
 
   flags.DEFINE_multi_string(
       'gin_file',

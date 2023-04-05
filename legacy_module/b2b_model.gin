@@ -1,0 +1,5 @@
+# -*-Python-*-
+
+include 'models/t5.1.1.large.gin'
+
+utils.run.model_type = "lm"

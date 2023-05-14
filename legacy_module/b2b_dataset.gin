@@ -14,9 +14,8 @@ utils.run.vocabulary = @mesh_transformer.get_vocabulary()
 
 # additional args
 utils.run.sequence_length = {'targets': 1024}
-utils.run.batch_size = ('tokens_per_batch', 65536)
+utils.run.batch_size = ('sequences_per_batch', 64)
 utils.run.train_steps = 1500000
 utils.run.save_checkpoints_steps = 25000
 utils.tpu_mesh_shape.model_parallelism = 1
 utils.tpu_mesh_shape.tpu_topology = 'v3-8'
-

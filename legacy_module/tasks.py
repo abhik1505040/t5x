@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO)
 TaskRegistry = seqio.TaskRegistry
 
 PRETRAINED_VOCAB_PATH = "gs://bt5-small-bucket/new_vocabs/50k/new_vocab.model"
-PRETRAINING_DATA_PATH = "gs://bt5-small-bucket/lsh_deduplicated_data/*.txt"
+PRETRAINING_DATA_PATH = "gs://bt5-small-bucket/instruction_merged_pretraining_data/*.txt"
 
 def get_line_count(pattern, split="train"):
     input_files = tf.io.gfile.glob(pattern)

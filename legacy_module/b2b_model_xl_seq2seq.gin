@@ -1,0 +1,8 @@
+# -*-Python-*-
+
+include 'models/t5.1.1.large.gin'
+
+d_model = 1536
+num_layers = 24
+d_ff = 4032
+num_heads = 24

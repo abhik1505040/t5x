@@ -63,7 +63,32 @@ TaskRegistry.add(
     output_features=OUTPUT_FEATURES,
     metric_fns=[])
 
+TaskRegistry.add(
+    "bt5",
+    source=seqio.TextLineDataSource(
+        split_to_filepattern={"train": PRETRAINING_DATA_PATH},
+        num_input_examples=get_line_count(PRETRAINING_DATA_PATH)
+    ),
+    preprocessors=[
+        functools.partial(
+            t5.data.preprocessors.parse_tsv,
+            field_names=["text"]),
+        functools.partial(
+            t5.data.preprocessors.rekey,
+            key_map={
+                "inputs": None,
+                "targets": "text"
+            }),
+        seqio.preprocessors.tokenize,
+        seqio.CacheDatasetPlaceholder(),
+        t5.data.preprocessors.span_corruption,
+        seqio.preprocessors.append_eos_after_trim
+    ],
+    output_features=OUTPUT_FEATURES,
+    metric_fns=[])
+
 seqio.MixtureRegistry.add("blamda", ["blamda"], default_rate=1.0)
+seqio.MixtureRegistry.add("bt5", ["bt5"], default_rate=1.0)
 
 if __name__ == "__main__":
     task = seqio.TaskRegistry.get("blamda")

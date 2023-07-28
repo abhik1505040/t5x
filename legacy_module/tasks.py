@@ -10,8 +10,10 @@ logging.basicConfig(level=logging.INFO)
 
 TaskRegistry = seqio.TaskRegistry
 
+SEQ2SEQ_VOCAB_PATH = "gs://bt5-small-bucket/spiece.model"
 PRETRAINED_VOCAB_PATH = "gs://bt5-small-bucket/new_vocabs/50k/new_vocab.model"
 PRETRAINING_DATA_PATH = "gs://bt5-small-bucket/instruction_merged_pretraining_data/*.txt"
+SENTINEL_TOKENS = 100
 
 def get_line_count(pattern, split="train"):
     input_files = tf.io.gfile.glob(pattern)
@@ -29,14 +31,17 @@ def get_line_count(pattern, split="train"):
 
     return {split: line_count}
 
-def get_vocabulary():
-    return seqio.SentencePieceVocabulary(
-        PRETRAINED_VOCAB_PATH
-    )
 
-OUTPUT_FEATURES = {
+OUTPUT_FEATURES_DECODER = {
     "targets": seqio.Feature(
-        vocabulary=get_vocabulary(), add_eos=True)
+        vocabulary=seqio.SentencePieceVocabulary(PRETRAINED_VOCAB_PATH), add_eos=True)
+}
+OUTPUT_FEATURES_SEQ2SEQ = {
+    "inputs": seqio.Feature(
+        vocabulary=seqio.SentencePieceVocabulary(SEQ2SEQ_VOCAB_PATH, SENTINEL_TOKENS), add_eos=True,
+        required=False),
+    "targets": seqio.Feature(
+        vocabulary=seqio.SentencePieceVocabulary(SEQ2SEQ_VOCAB_PATH, SENTINEL_TOKENS), add_eos=True)
 }
 
 TaskRegistry.add(
@@ -60,7 +65,7 @@ TaskRegistry.add(
         t5.data.preprocessors.full_lm,
         # seqio.preprocessors.append_eos_after_trim
     ],
-    output_features=OUTPUT_FEATURES,
+    output_features=OUTPUT_FEATURES_DECODER,
     metric_fns=[])
 
 TaskRegistry.add(
@@ -84,7 +89,7 @@ TaskRegistry.add(
         t5.data.preprocessors.span_corruption,
         seqio.preprocessors.append_eos_after_trim
     ],
-    output_features=OUTPUT_FEATURES,
+    output_features=OUTPUT_FEATURES_SEQ2SEQ,
     metric_fns=[])
 
 seqio.MixtureRegistry.add("blamda", ["blamda"], default_rate=1.0)
